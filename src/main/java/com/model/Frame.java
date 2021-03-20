@@ -1,6 +1,5 @@
 package com.model;
 
-import com.constants.FrameType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,21 +9,16 @@ public class Frame {
 
   private Integer frameNumber;
   private int currentScore = 0;
-  private int attemptOneScore;
-  private int attemptTwoScore;
-  private int attemptThreeScore;
+  private int attemptOneScore  = -1;
+  private int attemptTwoScore = -1;
 
   public boolean isStrike() {
-    if (attemptOneScore == 10) {
-      return true;
-    }
-    return false;
+    return attemptOneScore == 10;
   }
 
   public boolean isSpare() {
-    if (attemptOneScore != 10 && (attemptOneScore + attemptTwoScore) == 10) {
-      return true;
-    }
-    return false;
+    return (attemptOneScore != 10 && (attemptOneScore + attemptTwoScore) == 10);
   }
+
+
 }

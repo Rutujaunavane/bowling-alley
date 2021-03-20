@@ -13,7 +13,7 @@ public class Lane {
   private Game game;
   private Pin pins;
 
-  public void startGame(){
+  public void playGame(){
     game.start();
   }
 }
