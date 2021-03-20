@@ -1,30 +1,26 @@
 package com;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.File;
+import java.io.IOException;
 
-@Getter
-@Setter
 public class BowlingAlleyManager {
 
-
-
-  private List<String> namesOfPlayer;
-  private int noOfPlayers;
-  private int noOfLanes;
-
-
-  public static void main(String args[]){
-    List<String> namesOfPlayer = new ArrayList<>();
-    namesOfPlayer.add("Rutuja");
-    namesOfPlayer.add("Vikram");
-    namesOfPlayer.add("Aditya");
+  public static void main(String args[]) throws IOException {
     BowlingAlley bowlingAlley = BowlingAlley.getInstance();
-    bowlingAlley.initializeBowlingAlley(10);
-    int laneNumber = bowlingAlley.initializeGame(namesOfPlayer);
+    InputDetails inputDetails = getInput();
+    bowlingAlley.initializeBowlingAlley(inputDetails.getNoOfLanes());
+    int laneNumber = bowlingAlley.initializeGame(inputDetails.getPlayerNames());
+    System.out.println("Alloted Lane =>" + laneNumber);
     bowlingAlley.startGame(laneNumber);
+  }
+
+  private static InputDetails getInput() throws IOException {
+    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    InputDetails inputDetails = mapper
+        .readValue(new File("src/main/resources/application.yaml"), InputDetails.class);
+    return inputDetails;
   }
 
 }
