@@ -1,8 +1,6 @@
-playerNames:
-  - MICHAEL
+playerNames :
   - DWIGHT
   - JIM
-  - ANDY
   - PAM
 
 noOfLanes: 10

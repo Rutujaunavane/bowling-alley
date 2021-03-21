@@ -5,6 +5,7 @@ import com.util.NumberUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +28,7 @@ public class Game {
       ScoreBoardUtil.printScoreByFrames(players, frameNo,playersFramesList);
       System.out.println();
       System.out.println();
-
+      moveAheadInput();
     }
     Player winningPlayer = getWinningPlayer(players, playersFramesList);
     ScoreBoardUtil.printWinner(winningPlayer);
@@ -173,5 +174,11 @@ public class Game {
    */
   private int hit(int noOfPins) {
     return NumberUtil.getRandomInteger(noOfPins, 0);
+  }
+
+  private void moveAheadInput(){
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Press enter to move to the next frame");
+    String readString = scanner.nextLine();
   }
 }

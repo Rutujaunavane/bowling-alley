@@ -26,7 +26,7 @@ public class BowlingAlley {
 
   public void initializeBowlingAlley(int noOfLanes) throws ImproperInputException {
     if (noOfLanes <= 0) {
-      throw new ImproperInputException("No players added. Game cannot be started");
+      throw new ImproperInputException("No number of lanes added. Game cannot be started");
     } else {
       for (int i = 0; i < noOfLanes; i++) {
         Lane lane = new Lane();

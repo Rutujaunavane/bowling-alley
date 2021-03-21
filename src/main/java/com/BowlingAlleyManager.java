@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BowlingAlleyManager {
 
   public static void main(String args[])
-      throws IOException, ImproperInputException {
+      throws ImproperInputException {
     InputDetails inputDetails = getInput();
     buildGame(inputDetails);
   }
@@ -25,10 +25,15 @@ public class BowlingAlleyManager {
     bowlingAlley.startGame(laneNumber);
   }
 
-  private static InputDetails getInput() throws IOException {
+  private static InputDetails getInput() throws ImproperInputException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputDetails inputDetails = mapper
-        .readValue(new File("src/main/resources/application.yaml"), InputDetails.class);
+    InputDetails inputDetails = null;
+    try {
+      inputDetails = mapper
+          .readValue(new File("src/main/resources/application.yaml"), InputDetails.class);
+    } catch (IOException e) {
+      throw new ImproperInputException("Input not in proper format. Game cannot be started");
+    }
     return inputDetails;
   }
 
