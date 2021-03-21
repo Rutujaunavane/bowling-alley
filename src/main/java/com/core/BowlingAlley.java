@@ -1,16 +1,13 @@
-package com;
+package com.core;
 
 import com.constant.ApplicationConstant;
-import com.model.Frame;
-import com.model.Game;
-import com.model.Lane;
-import com.model.LastFrame;
-import com.model.Player;
+import com.exception.ImproperInputException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,12 +24,16 @@ public class BowlingAlley {
     return bowlingAlley;
   }
 
-  public void initializeBowlingAlley(int noOfLanes) {
-    for (int i = 0; i < noOfLanes; i++) {
-      Lane lane = new Lane();
-      lane.setLaneNumber(i + 1);
-      lane.setLaneFree(true);
-      laneNumberLaneMap.put(i + 1, lane);
+  public void initializeBowlingAlley(int noOfLanes) throws ImproperInputException {
+    if (noOfLanes <= 0) {
+      throw new ImproperInputException("No players added. Game cannot be started");
+    } else {
+      for (int i = 0; i < noOfLanes; i++) {
+        Lane lane = new Lane();
+        lane.setLaneNumber(i + 1);
+        lane.setLaneFree(true);
+        laneNumberLaneMap.put(i + 1, lane);
+      }
     }
   }
 
@@ -42,16 +43,20 @@ public class BowlingAlley {
     return freeLane.get().getValue();
   }
 
-  public int initializeGame(List<String> namesOfPlayer) {
-    Lane lane = getFreeLane();
-    Game game = new Game();
-    game.setGameNumber(Math.random());
-    game.setPlayers(getPlayers(namesOfPlayer));
-    game.setFrames(getFrames());
-    game.setPlayersFramesList(getPlayersFramesList(namesOfPlayer));
-    lane.setGame(game);
-    bowlingAlley.laneNumberLaneMap.put(lane.getLaneNumber(), lane);
-    return lane.getLaneNumber();
+  public int initializeGame(List<String> namesOfPlayer) throws ImproperInputException {
+    if (Objects.isNull(namesOfPlayer) || namesOfPlayer.isEmpty()) {
+      throw new ImproperInputException("No players added. Game cannot be started");
+    } else {
+      Lane lane = getFreeLane();
+      Game game = new Game();
+      game.setGameNumber(Math.random());
+      game.setPlayers(getPlayers(namesOfPlayer));
+      game.setFrames(getFrames());
+      game.setPlayersFramesList(getPlayersFramesList(namesOfPlayer));
+      lane.setGame(game);
+      bowlingAlley.laneNumberLaneMap.put(lane.getLaneNumber(), lane);
+      return lane.getLaneNumber();
+    }
   }
 
   public List<ArrayList<Frame>> getPlayersFramesList(List<String> namesOfPlayer) {
@@ -90,8 +95,6 @@ public class BowlingAlley {
     if (laneNumberLaneMap.containsKey(laneNumber)) {
       Lane lane = laneNumberLaneMap.get(laneNumber);
       lane.playGame();
-    } else {
-
     }
   }
 }

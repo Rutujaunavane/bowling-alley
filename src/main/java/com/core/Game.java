@@ -1,4 +1,4 @@
-package com.model;
+package com.core;
 
 import com.constant.ApplicationConstant;
 import com.util.NumberUtil;
@@ -18,12 +18,19 @@ public class Game {
   private List<Frame> frames = new ArrayList<>(ApplicationConstant.NO_OF_FRAMES);
 
 
-  public void start() {
+  public void start()  {
     for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
       playForFrame(frameNo);
+      System.out.println();
+      System.out.format("\t\t****************Round %s ******************",frameNo+1);
+      System.out.println();
+      ScoreBoardUtil.printScoreByFrames(players, frameNo,playersFramesList);
+      System.out.println();
+      System.out.println();
+
     }
     Player winningPlayer = getWinningPlayer(players, playersFramesList);
-    ScoreBoardUtil.printScoreBoard(playersFramesList, players, winningPlayer);
+    ScoreBoardUtil.printWinner(winningPlayer);
   }
 
   /**

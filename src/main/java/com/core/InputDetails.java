@@ -1,4 +1,4 @@
-package com;
+package com.core;
 
 import java.util.List;
 import lombok.Getter;
