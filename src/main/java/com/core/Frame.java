@@ -19,6 +19,4 @@ public class Frame {
   public boolean isSpare() {
     return (attemptOneScore != 10 && (attemptOneScore + attemptTwoScore) == 10);
   }
-
-
 }

@@ -1,5 +1,8 @@
 package com.core;
 
+import com.exception.ImproperInputException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,13 +10,24 @@ import lombok.Setter;
 @Setter
 public class Lane {
 
-  private Integer laneNumber;
+  private int laneNumber;
   private boolean isLaneFree;
 
   private Game game;
-  private Pin pins;
 
-  public void playGame(){
-    game.start();
+  public void playGame() throws ImproperInputException {
+    if( game==null || game.getPlayers().isEmpty()){
+      throw  new ImproperInputException("Game cannot be started without adding player");
+    }
+    else
+      game.start();
+  }
+
+  public List<ArrayList<Frame>> getGameScore() {
+    return game.getPlayersFramesList();
+  }
+
+  public Player getWinningPlayer() {
+    return game.getWinningPlayer();
   }
 }

@@ -37,10 +37,22 @@ public class BowlingAlley {
     }
   }
 
+  public List<Lane> getFreeLanes(){
+    List<Lane> freeLanes = new ArrayList<>();
+
+    laneNumberLaneMap.forEach((k,v)->{
+      if(v.isLaneFree())
+         freeLanes.add(v);
+    });
+   return freeLanes;
+  }
+
   private Lane getFreeLane() {
     Optional<Entry<Integer, Lane>> freeLane = laneNumberLaneMap.entrySet().stream()
         .filter(e -> e.getValue().isLaneFree()).findFirst();
-    return freeLane.get().getValue();
+    if(freeLane.isPresent())
+      return freeLane.get().getValue();
+    return null;
   }
 
   public int initializeGame(List<String> namesOfPlayer) throws ImproperInputException {
@@ -48,18 +60,34 @@ public class BowlingAlley {
       throw new ImproperInputException("No players added. Game cannot be started");
     } else {
       Lane lane = getFreeLane();
-      Game game = new Game();
-      game.setGameNumber(Math.random());
-      game.setPlayers(getPlayers(namesOfPlayer));
-      game.setFrames(getFrames());
-      game.setPlayersFramesList(getPlayersFramesList(namesOfPlayer));
-      lane.setGame(game);
-      bowlingAlley.laneNumberLaneMap.put(lane.getLaneNumber(), lane);
-      return lane.getLaneNumber();
+      if(Objects.isNull(lane)){
+        return -1;
+      }
+      else {
+        Game game = new Game();
+        game.setGameNumber(lane.getLaneNumber());
+        game.setPlayers(getPlayers(namesOfPlayer));
+        game.setFrames(getFrames());
+        game.setPlayersFramesList(getPlayersFramesList(namesOfPlayer));
+        lane.setGame(game);
+        lane.setLaneFree(false);
+        bowlingAlley.laneNumberLaneMap.put(lane.getLaneNumber(), lane);
+        return lane.getLaneNumber();
+      }
     }
   }
 
-  public List<ArrayList<Frame>> getPlayersFramesList(List<String> namesOfPlayer) {
+  public List<ArrayList<Frame>> getScoreByLane(int laneNumber) throws ImproperInputException {
+    if(!laneNumberLaneMap.containsKey(laneNumber)){
+      throw new ImproperInputException("Lane number not present in the alley");
+    }
+    else {
+      Lane lane = laneNumberLaneMap.get(laneNumber);
+      return lane.getGameScore();
+    }
+  }
+
+  private List<ArrayList<Frame>> getPlayersFramesList(List<String> namesOfPlayer) {
     List<ArrayList<Frame>> playersFramesList = new ArrayList<>(namesOfPlayer.size());
     namesOfPlayer.forEach(player -> playersFramesList.add(getFrames()));
     return playersFramesList;
@@ -72,7 +100,6 @@ public class BowlingAlley {
       return p;
     }).collect(Collectors.toList());
   }
-
 
   private ArrayList<Frame> getFrames() {
     List<Frame> frames = new ArrayList<>();
@@ -91,7 +118,7 @@ public class BowlingAlley {
     return lastFrame;
   }
 
-  public void startGame(int laneNumber) {
+  public void startGame(int laneNumber) throws ImproperInputException {
     if (laneNumberLaneMap.containsKey(laneNumber)) {
       Lane lane = laneNumberLaneMap.get(laneNumber);
       lane.playGame();

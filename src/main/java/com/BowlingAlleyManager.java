@@ -1,40 +1,81 @@
 package com;
 
 import com.core.BowlingAlley;
-import com.core.InputDetails;
 import com.exception.ImproperInputException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BowlingAlleyManager {
 
-  public static void main(String args[])
-      throws ImproperInputException {
-    InputDetails inputDetails = getInput();
-    buildGame(inputDetails);
+  private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+  private BowlingAlley bowlingAlley = BowlingAlley.getInstance();
+
+  public BowlingAlley getBowlingAlley() {
+    return bowlingAlley;
   }
 
-  public static void buildGame(InputDetails inputDetails)
-      throws ImproperInputException {
-    BowlingAlley bowlingAlley = BowlingAlley.getInstance();
-    bowlingAlley.initializeBowlingAlley(inputDetails.getNoOfLanes());
-    int laneNumber = bowlingAlley.initializeGame(inputDetails.getPlayerNames());
-    System.out.println("Alloted Lane =>" + laneNumber);
-    bowlingAlley.startGame(laneNumber);
+  public void buildGame()
+      throws ImproperInputException, IOException {
+    getInputFromConsole();
   }
 
-  private static InputDetails getInput() throws ImproperInputException {
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputDetails inputDetails = null;
-    try {
-      inputDetails = mapper
-          .readValue(new File("src/main/resources/application.yaml"), InputDetails.class);
-    } catch (IOException e) {
-      throw new ImproperInputException("Input not in proper format. Game cannot be started");
+  private void getInputFromConsole() throws IOException, ImproperInputException {
+    int noOfLanes = initializeLanes();
+    System.out.println("Enter the number of games to be played: ");
+    int noOfGames = Integer.parseInt(reader.readLine());
+    int i = 1;
+    while (i <= noOfGames) {
+      initializeGame(i);
+      i++;
     }
-    return inputDetails;
+    startGames(noOfLanes);
   }
 
+  private void startGames(int noOfLanes) throws IOException, ImproperInputException {
+    while (true) {
+      System.out.println("Do you want to start playing the games? Press Y/N");
+      String input = reader.readLine();
+      if ("Y".equalsIgnoreCase(input)) {
+        for (int i = 0; i < noOfLanes; i++) {
+          System.out.println();
+          System.out.println("Game started on lane =>" + i);
+          bowlingAlley.startGame(i + 1);
+        }
+        break;
+      } else if ("N".equalsIgnoreCase(input)) {
+        System.out.println("Games not started");
+        break;
+      } else {
+        System.out.println("Input not in correct format");
+      }
+    }
+  }
+
+  private void initializeGame(int game) throws IOException, ImproperInputException {
+    System.out.println("Enter the number of players for game" + game);
+    int noOfPlayers = Integer.parseInt(reader.readLine());
+    List<String> playerNames = new ArrayList<>();
+    int i = 1;
+    while (i <= noOfPlayers) {
+      System.out.println("Enter name of the player :" + i);
+      playerNames.add(reader.readLine());
+      i++;
+    }
+    int lane = bowlingAlley.initializeGame(playerNames);
+    if (lane == -1) {
+      System.out.println("No lane is free for game " + game);
+    } else {
+      System.out.println("Lane assigned for game " + game + " is" + lane);
+    }
+  }
+
+  private int initializeLanes() throws IOException, ImproperInputException {
+    System.out.println("Enter the number of lanes for bowling alley");
+    int noOfLanes = Integer.parseInt(reader.readLine());
+    bowlingAlley.initializeBowlingAlley(noOfLanes);
+    return noOfLanes;
+  }
 }

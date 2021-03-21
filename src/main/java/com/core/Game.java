@@ -13,11 +13,10 @@ import lombok.Setter;
 @Setter
 public class Game {
 
-  private double gameNumber;
+  private int gameNumber;
   private List<ArrayList<Frame>> playersFramesList = new ArrayList<>();
   private List<Player> players = new ArrayList<>();
   private List<Frame> frames = new ArrayList<>(ApplicationConstant.NO_OF_FRAMES);
-
 
   public void start()  {
     for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
@@ -31,9 +30,8 @@ public class Game {
       moveAheadInput();
     }
     Player winningPlayer = getWinningPlayer(players, playersFramesList);
-    ScoreBoardUtil.printWinner(winningPlayer);
+    ScoreBoardUtil.printWinner(winningPlayer,gameNumber);
   }
-
   /**
    * This method finds the winning player
    * @param players
@@ -49,6 +47,10 @@ public class Game {
       players.get(i).setCurrentScore(score);
     }
     return players.stream().max(Comparator.comparing(Player::getCurrentScore)).get();
+  }
+
+  public Player getWinningPlayer(){
+    return getWinningPlayer(this.getPlayers(),this.playersFramesList);
   }
 
   private void playForFrame(int frameNo) {

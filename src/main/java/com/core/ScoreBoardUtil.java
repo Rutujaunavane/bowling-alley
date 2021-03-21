@@ -5,12 +5,14 @@ import java.util.List;
 
 public class ScoreBoardUtil {
 
-  public static void printWinner(Player winningPlayer) {
-    System.out.println("Winning Player is => \033[0;31m" + winningPlayer.getPlayerName());
+  public static void printWinner(Player winningPlayer, int gameNumber) {
+    System.out.println("\033[0m");
+    System.out.format("Winning Player for game %s is \033[0;31m%s", gameNumber,winningPlayer.getPlayerName());
   }
 
   public static void printScoreByFrames(List<Player> players, int frameNo,
       List<ArrayList<Frame>> playersFramesList) {
+    System.out.println("\033[0m");
     printHeader();
     for (int i = 0; i < players.size(); i++) {
       int score = 0;
