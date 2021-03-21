@@ -5,7 +5,6 @@ import com.util.NumberUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,15 +21,29 @@ public class Game {
     for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
       playForFrame(frameNo);
       System.out.println();
-      System.out.format("\t\t****************Round %s ******************",frameNo+1);
+      System.out.format("\t\t****************Round %s ******************", frameNo + 1);
       System.out.println();
-      ScoreBoardUtil.printScoreByFrames(players, frameNo,playersFramesList);
+      ScoreBoardUtil.printScoreByFrames(players, frameNo, playersFramesList);
       System.out.println();
       System.out.println();
-      moveAheadInput();
     }
-    Player winningPlayer = getWinningPlayer(players, playersFramesList);
-    ScoreBoardUtil.printWinner(winningPlayer,gameNumber);
+  }
+
+  public void printWinningPlayer(){
+    Player player = getWinningPlayer();
+    ScoreBoardUtil.printWinner(player,gameNumber);
+  }
+
+  public void printScoreBoard(){
+    for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
+      System.out.println();
+      System.out.format("\t\t****************Round %s ******************", frameNo + 1);
+      System.out.println();
+      ScoreBoardUtil.printScoreByFrames(players, frameNo, playersFramesList);
+      System.out.println();
+      System.out.println();
+    }
+
   }
   /**
    * This method finds the winning player
@@ -48,6 +61,15 @@ public class Game {
     }
     return players.stream().max(Comparator.comparing(Player::getCurrentScore)).get();
   }
+
+  public List<Frame> getFrameScoreByPlayerName(String playerName){
+    for(Player player:players){
+      if(player.getPlayerName().equalsIgnoreCase(playerName))
+        return playersFramesList.get(players.indexOf(player));
+    }
+    return null;
+  }
+
 
   public Player getWinningPlayer(){
     return getWinningPlayer(this.getPlayers(),this.playersFramesList);
@@ -178,9 +200,4 @@ public class Game {
     return NumberUtil.getRandomInteger(noOfPins, 0);
   }
 
-  private void moveAheadInput(){
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Press enter to move to the next frame");
-    String readString = scanner.nextLine();
-  }
 }

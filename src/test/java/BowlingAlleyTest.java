@@ -63,9 +63,21 @@ public class BowlingAlleyTest {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
     BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
     bowlingAlley.initializeBowlingAlley(1);
-
     bowlingAlley.startGame(1);
   }
+
+  @Test()
+  public void checkWinningPlayerForSinglePlayer() throws ImproperInputException {
+    BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
+    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
+    bowlingAlley.initializeBowlingAlley(1);
+    List<String> names = new ArrayList<>();
+    names.add("Player1");
+    bowlingAlley.initializeGame(names);
+    bowlingAlley.startGame(1);
+    Assert.assertEquals(bowlingAlley.getWinningPlayerByLane(1).getPlayerName(), "Player1");
+  }
+
 
   private List<String> getPlayers() {
     List<String> names = new ArrayList<>();

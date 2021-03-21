@@ -77,6 +77,16 @@ public class BowlingAlley {
     }
   }
 
+  public Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
+    if(!laneNumberLaneMap.containsKey(laneNumber)){
+      throw new ImproperInputException("Lane number not present in the alley");
+    }
+    else {
+      Lane lane = laneNumberLaneMap.get(laneNumber);
+      return lane.getWinningPlayer();
+    }
+  }
+
   public List<ArrayList<Frame>> getScoreByLane(int laneNumber) throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
@@ -86,6 +96,41 @@ public class BowlingAlley {
       return lane.getGameScore();
     }
   }
+
+  public int getScoreByPlayerAndLane(int laneNumber,String playerName)
+      throws ImproperInputException {
+    if(!laneNumberLaneMap.containsKey(laneNumber)){
+      throw new ImproperInputException("Lane number not present in the alley");
+    }
+    else {
+      Lane lane = laneNumberLaneMap.get(laneNumber);
+      List<Player> players = lane.getGame().getPlayers();
+      for(Player p : players){
+        if(p.getPlayerName().equalsIgnoreCase(playerName))
+          return p.getCurrentScore();
+      }
+
+    }
+    return laneNumber;
+  }
+
+  public List<Frame> getScoresOfAllFramesForPlayerAndLane(int laneNumber,String playerName)
+      throws ImproperInputException {
+    if(!laneNumberLaneMap.containsKey(laneNumber)){
+      throw new ImproperInputException("Lane number not present in the alley");
+    }
+    else {
+      Lane lane = laneNumberLaneMap.get(laneNumber);
+      List<Player> players = lane.getGame().getPlayers();
+      for(Player p : players){
+        if(p.getPlayerName().equalsIgnoreCase(playerName))
+          lane.getGame().getFrameScoreByPlayerName(playerName);
+      }
+
+    }
+    return new ArrayList<>();
+  }
+
 
   private List<ArrayList<Frame>> getPlayersFramesList(List<String> namesOfPlayer) {
     List<ArrayList<Frame>> playersFramesList = new ArrayList<>(namesOfPlayer.size());

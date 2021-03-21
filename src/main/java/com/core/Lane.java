@@ -19,8 +19,10 @@ public class Lane {
     if( game==null || game.getPlayers().isEmpty()){
       throw  new ImproperInputException("Game cannot be started without adding player");
     }
-    else
+    else {
       game.start();
+      game.printWinningPlayer();
+    }
   }
 
   public List<ArrayList<Frame>> getGameScore() {
