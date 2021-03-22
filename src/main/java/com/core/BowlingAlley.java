@@ -77,7 +77,7 @@ public class BowlingAlley {
     }
   }
 
-  protected Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
+  protected List<Player> getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
     }

@@ -100,7 +100,7 @@ public class BowlingAlleyManager {
     return bowlingAlley.isLaneAssignedAGame(lane);
   }
 
-  public Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
+  public List<Player> getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
     return bowlingAlley.getWinningPlayerByLane(laneNumber);
   }
 

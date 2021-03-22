@@ -30,7 +30,7 @@ public class Lane {
     return game.getPlayersFramesList();
   }
 
-  protected Player getWinningPlayer() {
+  protected List<Player> getWinningPlayer() {
     return game.getWinningPlayer();
   }
 

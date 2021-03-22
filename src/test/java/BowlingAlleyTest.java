@@ -20,7 +20,7 @@ public class BowlingAlleyTest {
   @Test
   public void testFreeLanesInitializeToNumberOfLanes() {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    Assert.assertEquals(bowlingAlleyManager.getFreeLanes().size(), 2);
+    Assert.assertEquals(2,bowlingAlleyManager.getFreeLanes().size());
   }
 
   @Test
@@ -29,7 +29,7 @@ public class BowlingAlleyTest {
     List<String> names = getPlayers();
     bowlingAlleyManager.initializeGame(names,1);
     List<ArrayList<Frame>> gameScore = bowlingAlleyManager.getScoreByLane(1);
-    Assert.assertEquals(gameScore.get(0).get(0).getCurrentScore(), 0);
+    Assert.assertEquals(0,gameScore.get(0).get(0).getCurrentScore());
   }
 
   @Test(expected = ImproperInputException.class)
@@ -55,7 +55,7 @@ public class BowlingAlleyTest {
     names.add("Player1");
     bowlingAlleyManager.initializeGame(names,1);
     bowlingAlleyManager.startGameByLane(1);
-    Assert.assertEquals(bowlingAlleyManager.getWinningPlayerByLane(1).getPlayerName(), "Player1");
+    Assert.assertEquals("Player1",bowlingAlleyManager.getWinningPlayerByLane(1).get(0).getPlayerName());
   }
 
   @Test()
@@ -63,7 +63,7 @@ public class BowlingAlleyTest {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
     bowlingAlleyManager.initializeGame(getPlayers(), 1);
     bowlingAlleyManager.initializeGame(getPlayers(), 2);
-    Assert.assertEquals(bowlingAlleyManager.initializeGame(getPlayers(), 3), -1);
+    Assert.assertEquals(-1,bowlingAlleyManager.initializeGame(getPlayers(), 3));
   }
 
 

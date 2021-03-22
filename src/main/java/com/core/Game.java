@@ -5,6 +5,8 @@ import com.util.NumberUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +33,7 @@ public class Game {
   }
 
   protected void printWinningPlayer(){
-    Player player = getWinningPlayer();
+    List<Player> player = getWinningPlayer();
     ScoreBoardUtil.printWinner(player,gameNumber);
   }
 
@@ -52,7 +54,25 @@ public class Game {
    * @param playersFramesList
    * @return
    */
-  private Player getWinningPlayer(List<Player> players, List<ArrayList<Frame>> playersFramesList) {
+  private List<Player> getWinningPlayer(List<Player> players, List<ArrayList<Frame>> playersFramesList) {
+    calculatePlayerScores(players, playersFramesList);
+
+    return findWinners(players);
+  }
+
+  private List<Player> findWinners(List<Player> players) {
+    players.sort(Comparator.comparing(Player::getCurrentScore));
+    List<Player>winningPlayers = new ArrayList<>();
+    int winningScore = players.stream().max(Comparator.comparing(Player::getCurrentScore)).get().getCurrentScore();
+    for(Player p:players){
+      if(p.getCurrentScore() ==winningScore)
+        winningPlayers.add(p);
+    }
+    return winningPlayers;
+  }
+
+  private void calculatePlayerScores(List<Player> players,
+      List<ArrayList<Frame>> playersFramesList) {
     for (int i = 0; i < players.size(); i++) {
       int score = 0;
       for (Frame frame : playersFramesList.get(i)) {
@@ -60,8 +80,8 @@ public class Game {
       }
       players.get(i).setCurrentScore(score);
     }
-    return players.stream().max(Comparator.comparing(Player::getCurrentScore)).get();
   }
+
 
   protected List<Frame> getFrameScoreByPlayerName(String playerName){
     for(Player player:players){
@@ -72,7 +92,7 @@ public class Game {
   }
 
 
-  protected Player getWinningPlayer(){
+  protected List<Player> getWinningPlayer(){
     return getWinningPlayer(this.getPlayers(),this.playersFramesList);
   }
 
