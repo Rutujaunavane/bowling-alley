@@ -5,11 +5,12 @@ import com.util.NumberUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 public class Game {
 
   private int gameNumber;

@@ -1,81 +1,69 @@
 
-import static org.mockito.BDDMockito.given;
-
-import com.BowlingAlleyManager;
-import com.core.BowlingAlley;
+import com.core.BowlingAlleyManager;
 import com.core.Frame;
 import com.exception.ImproperInputException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class BowlingAlleyTest {
 
-  BowlingAlleyManager bowlingAlleyManager;
 
-
-  public void setUp() {
-    this.bowlingAlleyManager = new BowlingAlleyManager();
-
-  }
-
-
-  @Test()
+  @Before
   public void testInitializeInput() throws ImproperInputException {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(2);
+    bowlingAlleyManager.initializeBowlingAlley(2);
   }
 
-
   @Test
-  public void checkFreeLanesInitializeToNumberOfLanes() throws ImproperInputException {
+  public void testFreeLanesInitializeToNumberOfLanes() {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(10);
-    Assert.assertEquals(bowlingAlley.getFreeLanes().size(), 10);
+    Assert.assertEquals(bowlingAlleyManager.getFreeLanes().size(), 2);
   }
 
   @Test
   public void testGameScoreInitializedToZero() throws ImproperInputException {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(1);
     List<String> names = getPlayers();
-    bowlingAlley.initializeGame(names);
-    List<ArrayList<Frame>> gameScore = bowlingAlley.getScoreByLane(1);
+    bowlingAlleyManager.initializeGame(names,1);
+    List<ArrayList<Frame>> gameScore = bowlingAlleyManager.getScoreByLane(1);
     Assert.assertEquals(gameScore.get(0).get(0).getCurrentScore(), 0);
   }
 
   @Test(expected = ImproperInputException.class)
-  public void invalidLaneNumber() throws ImproperInputException {
+  public void testInvalidLaneNumber() throws ImproperInputException {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(1);
     List<String> names = getPlayers();
-    bowlingAlley.initializeGame(names);
-    List<ArrayList<Frame>> gameScore = bowlingAlley.getScoreByLane(2);
+    bowlingAlleyManager.initializeGame(names,1);
+    List<ArrayList<Frame>> gameScore = bowlingAlleyManager.getScoreByLane(3);
   }
 
-  @Test(expected = ImproperInputException.class)
+  @Test
   public void checkGameStartWithoutPlayers() throws ImproperInputException {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(1);
-    bowlingAlley.startGame(1);
+    int lane = bowlingAlleyManager.initializeGame(getPlayers(),1);
+    Assert.assertFalse(bowlingAlleyManager.isLaneAssignedAGame(2));
+
   }
 
   @Test()
-  public void checkWinningPlayerForSinglePlayer() throws ImproperInputException {
+  public void testWinningPlayerForSinglePlayer() throws ImproperInputException {
     BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
-    BowlingAlley bowlingAlley = bowlingAlleyManager.getBowlingAlley();
-    bowlingAlley.initializeBowlingAlley(1);
     List<String> names = new ArrayList<>();
     names.add("Player1");
-    bowlingAlley.initializeGame(names);
-    bowlingAlley.startGame(1);
-    Assert.assertEquals(bowlingAlley.getWinningPlayerByLane(1).getPlayerName(), "Player1");
+    bowlingAlleyManager.initializeGame(names,1);
+    bowlingAlleyManager.startGameByLane(1);
+    Assert.assertEquals(bowlingAlleyManager.getWinningPlayerByLane(1).getPlayerName(), "Player1");
+  }
+
+  @Test()
+  public void testNoOfGamesMoreThanNoOfLanes() throws ImproperInputException {
+    BowlingAlleyManager bowlingAlleyManager = new BowlingAlleyManager();
+    bowlingAlleyManager.initializeGame(getPlayers(), 1);
+    bowlingAlleyManager.initializeGame(getPlayers(), 2);
+    Assert.assertEquals(bowlingAlleyManager.initializeGame(getPlayers(), 3), -1);
   }
 
 

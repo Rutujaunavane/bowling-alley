@@ -1,6 +1,5 @@
-package com;
+package com.core;
 
-import com.core.BowlingAlley;
 import com.exception.ImproperInputException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +10,14 @@ import java.util.List;
 public class BowlingAlleyManager {
 
   private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-  private BowlingAlley bowlingAlley = BowlingAlley.getInstance();
+  private BowlingAlley bowlingAlley;
+
+  public BowlingAlleyManager(){
+    bowlingAlley = BowlingAlley.getInstance();
+  }
 
   public BowlingAlley getBowlingAlley() {
+    bowlingAlley = BowlingAlley.getInstance();
     return bowlingAlley;
   }
 
@@ -64,12 +68,17 @@ public class BowlingAlleyManager {
       playerNames.add(reader.readLine());
       i++;
     }
+    initializeGame(playerNames,game);
+  }
+
+  public int initializeGame(List<String> playerNames,int gameNumber) throws ImproperInputException {
     int lane = bowlingAlley.initializeGame(playerNames);
     if (lane == -1) {
-      System.out.println("No lane is free for game " + game);
+      System.out.println("No lane is free for game " + gameNumber);
     } else {
-      System.out.println("Lane assigned for game " + game + " is" + lane);
+      System.out.println("Lane assigned for game " + gameNumber + " is" + lane);
     }
+    return lane;
   }
 
   private int initializeLanes() throws IOException, ImproperInputException {
@@ -77,5 +86,39 @@ public class BowlingAlleyManager {
     int noOfLanes = Integer.parseInt(reader.readLine());
     bowlingAlley.initializeBowlingAlley(noOfLanes);
     return noOfLanes;
+  }
+
+  public void initializeBowlingAlley(int numberOfLanes) throws ImproperInputException {
+    this.bowlingAlley.initializeBowlingAlley(numberOfLanes);
+  }
+
+  public void startGameByLane(int lane) throws ImproperInputException {
+    bowlingAlley.startGame(lane);
+  }
+
+  public boolean isLaneAssignedAGame(int lane) throws ImproperInputException {
+    return bowlingAlley.isLaneAssignedAGame(lane);
+  }
+
+  public Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
+    return bowlingAlley.getWinningPlayerByLane(laneNumber);
+  }
+
+  public List<ArrayList<Frame>> getScoreByLane(int laneNumber) throws ImproperInputException {
+    return bowlingAlley.getScoreByLane(laneNumber);
+  }
+
+  public List<Lane> getFreeLanes(){
+    return bowlingAlley.getFreeLanes();
+  }
+
+  public int getScoreByPlayerAndLane(int laneNumber,String playerName)
+      throws ImproperInputException {
+    return bowlingAlley.getScoreByPlayerAndLane(laneNumber,playerName);
+  }
+
+  public List<Frame> getScoresOfAllFramesForPlayerAndLane(int laneNumber,String playerName)
+      throws ImproperInputException {
+    return bowlingAlley.getScoresOfAllFramesForPlayerAndLane(laneNumber,playerName);
   }
 }

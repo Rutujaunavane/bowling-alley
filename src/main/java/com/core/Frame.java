@@ -1,9 +1,10 @@
 package com.core;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @Getter
 public class Frame {
 
@@ -19,4 +20,6 @@ public class Frame {
   public boolean isSpare() {
     return (attemptOneScore != 10 && (attemptOneScore + attemptTwoScore) == 10);
   }
+
+
 }

@@ -24,7 +24,7 @@ public class BowlingAlley {
     return bowlingAlley;
   }
 
-  public void initializeBowlingAlley(int noOfLanes) throws ImproperInputException {
+  protected void initializeBowlingAlley(int noOfLanes) throws ImproperInputException {
     if (noOfLanes <= 0) {
       throw new ImproperInputException("No number of lanes added. Game cannot be started");
     } else {
@@ -37,7 +37,7 @@ public class BowlingAlley {
     }
   }
 
-  public List<Lane> getFreeLanes(){
+  protected List<Lane> getFreeLanes(){
     List<Lane> freeLanes = new ArrayList<>();
 
     laneNumberLaneMap.forEach((k,v)->{
@@ -55,7 +55,7 @@ public class BowlingAlley {
     return null;
   }
 
-  public int initializeGame(List<String> namesOfPlayer) throws ImproperInputException {
+  protected int initializeGame(List<String> namesOfPlayer) throws ImproperInputException {
     if (Objects.isNull(namesOfPlayer) || namesOfPlayer.isEmpty()) {
       throw new ImproperInputException("No players added. Game cannot be started");
     } else {
@@ -77,7 +77,7 @@ public class BowlingAlley {
     }
   }
 
-  public Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
+  protected Player getWinningPlayerByLane(int laneNumber) throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
     }
@@ -87,7 +87,7 @@ public class BowlingAlley {
     }
   }
 
-  public List<ArrayList<Frame>> getScoreByLane(int laneNumber) throws ImproperInputException {
+  protected List<ArrayList<Frame>> getScoreByLane(int laneNumber) throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
     }
@@ -97,7 +97,7 @@ public class BowlingAlley {
     }
   }
 
-  public int getScoreByPlayerAndLane(int laneNumber,String playerName)
+  protected int getScoreByPlayerAndLane(int laneNumber,String playerName)
       throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
@@ -114,7 +114,7 @@ public class BowlingAlley {
     return laneNumber;
   }
 
-  public List<Frame> getScoresOfAllFramesForPlayerAndLane(int laneNumber,String playerName)
+  protected List<Frame> getScoresOfAllFramesForPlayerAndLane(int laneNumber,String playerName)
       throws ImproperInputException {
     if(!laneNumberLaneMap.containsKey(laneNumber)){
       throw new ImproperInputException("Lane number not present in the alley");
@@ -163,10 +163,27 @@ public class BowlingAlley {
     return lastFrame;
   }
 
-  public void startGame(int laneNumber) throws ImproperInputException {
+  protected void startGame(int laneNumber) throws ImproperInputException {
     if (laneNumberLaneMap.containsKey(laneNumber)) {
       Lane lane = laneNumberLaneMap.get(laneNumber);
-      lane.playGame();
+      if (lane.isGameAssigned())
+        lane.playGame();
+      else {
+        System.out.println("No Game assigned on lane:"+ laneNumber);
+      }
     }
+  }
+
+  protected boolean isLaneAssignedAGame(int laneNumber) throws ImproperInputException {
+    if (laneNumberLaneMap.containsKey(laneNumber)) {
+      Lane lane = laneNumberLaneMap.get(laneNumber);
+      if (lane.isGameAssigned())
+        return true;
+      else {
+        return false;
+      }
+    }
+    else
+      throw new ImproperInputException("Lane number not present in the alley");
   }
 }

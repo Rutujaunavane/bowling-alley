@@ -1,9 +1,10 @@
 package com.core;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @Getter
 public class Player {
 
