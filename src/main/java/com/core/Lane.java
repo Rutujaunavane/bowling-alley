@@ -16,7 +16,7 @@ public class Lane {
 
   private Game game;
 
-  public void playGame() throws ImproperInputException {
+  protected void playGame() throws ImproperInputException {
     if( game==null || game.getPlayers().isEmpty()){
       throw  new ImproperInputException("Game cannot be started without adding player.");
     }
@@ -26,15 +26,15 @@ public class Lane {
     }
   }
 
-  public List<ArrayList<Frame>> getGameScore() {
+  protected List<ArrayList<Frame>> getGameScore() {
     return game.getPlayersFramesList();
   }
 
-  public Player getWinningPlayer() {
+  protected Player getWinningPlayer() {
     return game.getWinningPlayer();
   }
 
-  public boolean isGameAssigned(){
+  protected boolean isGameAssigned(){
     return game!=null;
   }
 }

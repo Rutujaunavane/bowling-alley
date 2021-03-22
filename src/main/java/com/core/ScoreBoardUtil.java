@@ -5,12 +5,12 @@ import java.util.List;
 
 public class ScoreBoardUtil {
 
-  public static void printWinner(Player winningPlayer, int gameNumber) {
+  protected static void printWinner(Player winningPlayer, int gameNumber) {
     System.out.println("\033[0m");
     System.out.format("Winning Player for game %s is \033[0;31m%s", gameNumber,winningPlayer.getPlayerName());
   }
 
-  public static void printScoreByFrames(List<Player> players, int frameNo,
+  protected static void printScoreByFrames(List<Player> players, int frameNo,
       List<ArrayList<Frame>> playersFramesList) {
     System.out.println("\033[0m");
     printHeader();
@@ -33,7 +33,7 @@ public class ScoreBoardUtil {
     }
   }
 
-  public static void printHeader() {
+  protected static void printHeader() {
     System.out
         .printf("%5s %11s %11s %11s %11s %11s %11s %11s %11s %11s %11s", "", "Frame 1", "Frame 2",
             "Frame 3", "Frame 4", "Frame 5", "Frame 6", "Frame 7", "Frame 8", "Frame 9",
@@ -43,7 +43,7 @@ public class ScoreBoardUtil {
         "------------------------------------------------------------------------------------------------------------------------------------------------------------");
   }
 
-  private static void printFrameScore(int score, Frame frame) {
+  protected static void printFrameScore(int score, Frame frame) {
     if (frame instanceof LastFrame) {
       System.out.format("\033[0m%6s|\033[0m%1s|\033[0m%s|\033[0;31m%s",
           getDataToPrint(frame.getAttemptOneScore(), 1, frame),
@@ -56,7 +56,7 @@ public class ScoreBoardUtil {
     }
   }
 
-  private static String getDataToPrint(int score, int attempt, Frame frame) {
+  protected static String getDataToPrint(int score, int attempt, Frame frame) {
     if (frame.isStrike() && attempt == 1) {
       return "X";
     } else if (frame.isSpare() && attempt == 2) {

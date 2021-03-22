@@ -18,7 +18,7 @@ public class Game {
   private List<Player> players = new ArrayList<>();
   private List<Frame> frames = new ArrayList<>(ApplicationConstant.NO_OF_FRAMES);
 
-  public void start()  {
+  protected void start()  {
     for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
       playForFrame(frameNo);
       System.out.println();
@@ -30,12 +30,12 @@ public class Game {
     }
   }
 
-  public void printWinningPlayer(){
+  protected void printWinningPlayer(){
     Player player = getWinningPlayer();
     ScoreBoardUtil.printWinner(player,gameNumber);
   }
 
-  public void printScoreBoard(){
+  protected void printScoreBoard(){
     for (int frameNo = 0; frameNo < ApplicationConstant.NO_OF_FRAMES; frameNo++) {
       System.out.println();
       System.out.format("\t\t****************Round %s ******************", frameNo + 1);
@@ -63,7 +63,7 @@ public class Game {
     return players.stream().max(Comparator.comparing(Player::getCurrentScore)).get();
   }
 
-  public List<Frame> getFrameScoreByPlayerName(String playerName){
+  protected List<Frame> getFrameScoreByPlayerName(String playerName){
     for(Player player:players){
       if(player.getPlayerName().equalsIgnoreCase(playerName))
         return playersFramesList.get(players.indexOf(player));
@@ -72,7 +72,7 @@ public class Game {
   }
 
 
-  public Player getWinningPlayer(){
+  protected Player getWinningPlayer(){
     return getWinningPlayer(this.getPlayers(),this.playersFramesList);
   }
 

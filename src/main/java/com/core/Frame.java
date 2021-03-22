@@ -13,11 +13,11 @@ public class Frame {
   private int attemptOneScore  = -1;
   private int attemptTwoScore = -1;
 
-  public boolean isStrike() {
+  protected boolean isStrike() {
     return attemptOneScore == 10;
   }
 
-  public boolean isSpare() {
+  protected boolean isSpare() {
     return (attemptOneScore != 10 && (attemptOneScore + attemptTwoScore) == 10);
   }
 
