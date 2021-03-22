@@ -22,5 +22,5 @@ The winner will be declared at the end of the game.
 * Enter the inputs as asked on the console.
 
 ## Output
-On execution of the code the scoreboard will be displayed at the end of every frame. Press enter to move ahead to the next frame.
+On execution of the code the scoreboard will be displayed at the end of every frame.
 Once all the frames are done the winner will be printed at the end.
